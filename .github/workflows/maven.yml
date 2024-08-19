@@ -24,6 +24,10 @@ jobs:
       run: |
         ./gradlew shadowJar --no-daemon
         mkdir staging/ && cp dev.skidfuscator.client.standalone/build/libs/client-standalone-all.jar staging
+        echo "Listing all files in dev.skidfuscator.client.standalone:"
+        find dev.skidfuscator.client.standalone -type f
+        echo "Listing all directories in dev.skidfuscator.client.standalone:"
+        find dev.skidfuscator.client.standalone -type d
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
