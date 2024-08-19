@@ -32,5 +32,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Skidfuscator.jar
-        path: staging/client-1.0.0-SNAPSHOT.jar
+        path: dev.skidfuscator.client.standalone/build/libs/client-standalone-all.jar
         if-no-files-found: warn
