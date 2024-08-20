@@ -644,17 +644,16 @@ public class Skidfuscator {
             }
 
             transformers.addAll(Arrays.asList(
-                    // ----- COMMUNITY -----
+                    /* ----- FUCK YOUR COMMUNITY ----- */
                     new NumberTransformer(this),
                     new SwitchTransformer(this),
                     new BasicConditionTransformer(this),
                     new BasicExceptionTransformer(this),
                     new BasicRangeTransformer(this),
-                /*
-                new FlatteningFlowTransformer(this),*/
+                    new NumberAnnotationTransformer(this),
+                    new StringAnnotationTransformer(this),
+                    new SimpleOutlinerTransformer(this),
                     new AhegaoTransformer(this)
-                    //new SimpleOutlinerTransformer()
-                    //
             ));
         } else {
             transformers.addAll(Arrays.asList(
