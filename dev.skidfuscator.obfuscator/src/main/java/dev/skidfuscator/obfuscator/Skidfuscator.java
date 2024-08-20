@@ -42,6 +42,8 @@ import dev.skidfuscator.obfuscator.skidasm.SkidMethodNode;
 import dev.skidfuscator.obfuscator.transform.Transformer;
 import dev.skidfuscator.obfuscator.transform.impl.SwitchTransformer;
 import dev.skidfuscator.obfuscator.transform.impl.flow.*;
+import dev.skidfuscator.obfuscator.transform.impl.annotation.*;
+import dev.skidfuscator.obfuscator.transform.impl.outliner.*;
 import dev.skidfuscator.obfuscator.transform.impl.flow.condition.BasicConditionTransformer;
 import dev.skidfuscator.obfuscator.transform.impl.flow.exception.BasicExceptionTransformer;
 import dev.skidfuscator.obfuscator.transform.impl.misc.AhegaoTransformer;
