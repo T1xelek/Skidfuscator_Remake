@@ -67,9 +67,19 @@ import java.util.stream.Collectors;
 
     public static boolean DEBUG = false;
 
+    public static String getIlIlI(int l) {
+        StringBuilder s = new StringBuilder();
+        char[] consufeChars = new char[]{'i', 'I', 'l', '1'};
+        for (int i = 0; i < l ; i++) {
+            s.append(consufeChars[ThreadLocalRandom.current().nextInt(consufeChars.length)]);
+        }
+
+        return s.toString();
+    }
+        
     @Listen
     void handle(final InitSkidTransformEvent event) {
-        final String factoryName = RandomUtil.randomAlphabeticalString(16) + "/" + RandomUtil.randomAlphabeticalString(16);
+        final String factoryName = getIlIlI(16) + "/" + getIlIlI(16);
         final SkidClassNode factory = new SkidClassNodeBuilder(skidfuscator)
                 .name(factoryName)
                 .access(Opcodes.ACC_PUBLIC)
