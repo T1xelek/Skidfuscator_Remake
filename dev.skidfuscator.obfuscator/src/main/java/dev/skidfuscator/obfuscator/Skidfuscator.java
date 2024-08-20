@@ -656,6 +656,7 @@ public class Skidfuscator {
                     new ExceptionReturnTransformer(this),
                     new FactoryMakerTransformer(this),
                     new ReferenceTransformer(this),
+                    new FlatteningFlowTransformer(this),
                     new NumberAnnotationTransformer(this),
                     new StringAnnotationTransformer(this),
                     new SimpleOutlinerTransformer(this),
