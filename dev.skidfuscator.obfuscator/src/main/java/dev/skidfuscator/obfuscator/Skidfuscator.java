@@ -660,7 +660,7 @@ public class Skidfuscator {
                     new NumberAnnotationTransformer(this),
                     new StringAnnotationTransformer(this),
                     new SimpleOutlinerTransformer(this),
-                    new AhegaoTransformer(this),
+                    new AhegaoTransformer(this)
             ));
         } else {
             transformers.addAll(Arrays.asList(
