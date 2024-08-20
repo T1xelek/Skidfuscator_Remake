@@ -654,9 +654,9 @@ public class Skidfuscator {
                     new BasicRangeTransformer(this),
                     // PREMIUM
                     new ExceptionReturnTransformer(this),
-                    //new FactoryMakerTransformer(this),
-                    //new FlatteningFlowTransformer(this),
-                    //new ReferenceTransformer(this),
+                    new FactoryMakerTransformer(this),
+                    //new FlatteningFlowTransformer(this), shitty dev fix this shit
+                    new ReferenceTransformer(this),
                     new NumberAnnotationTransformer(this),
                     new StringAnnotationTransformer(this),
                     new SimpleOutlinerTransformer(this),
