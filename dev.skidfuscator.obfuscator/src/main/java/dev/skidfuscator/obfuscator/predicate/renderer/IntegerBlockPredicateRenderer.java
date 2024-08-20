@@ -58,6 +58,7 @@ import org.objectweb.asm.Type;
 import org.topdank.byteengineer.commons.data.JarClassData;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
     public class IntegerBlockPredicateRenderer extends AbstractTransformer {
