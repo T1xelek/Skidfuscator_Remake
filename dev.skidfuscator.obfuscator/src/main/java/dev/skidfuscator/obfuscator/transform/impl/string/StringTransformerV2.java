@@ -85,7 +85,7 @@ public class StringTransformerV2 extends AbstractTransformer {
                     );
 
                     try {
-                        parent.overwrite(unit, encrypted);
+                        parent.overwrite(unit, modified);
                     } catch (IllegalStateException e) {
                         return;
                     }
