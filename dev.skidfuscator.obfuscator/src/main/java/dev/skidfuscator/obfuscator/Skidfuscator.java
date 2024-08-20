@@ -40,17 +40,17 @@ import dev.skidfuscator.obfuscator.skidasm.SkidClassNode;
 import dev.skidfuscator.obfuscator.skidasm.SkidGroup;
 import dev.skidfuscator.obfuscator.skidasm.SkidMethodNode;
 import dev.skidfuscator.obfuscator.transform.Transformer;
-import dev.skidfuscator.obfuscator.transform.impl.SwitchTransformer;
+import dev.skidfuscator.obfuscator.transform.impl.*;
 import dev.skidfuscator.obfuscator.transform.impl.flow.*;
 import dev.skidfuscator.obfuscator.transform.impl.annotation.*;
 import dev.skidfuscator.obfuscator.transform.impl.outliner.*;
-import dev.skidfuscator.obfuscator.transform.impl.flow.condition.BasicConditionTransformer;
-import dev.skidfuscator.obfuscator.transform.impl.flow.exception.BasicExceptionTransformer;
-import dev.skidfuscator.obfuscator.transform.impl.misc.AhegaoTransformer;
-import dev.skidfuscator.obfuscator.transform.impl.number.NumberTransformer;
-import dev.skidfuscator.obfuscator.transform.impl.string.StringEncryptionType;
-import dev.skidfuscator.obfuscator.transform.impl.string.StringTransformer;
-import dev.skidfuscator.obfuscator.transform.impl.string.StringTransformerV2;
+import dev.skidfuscator.obfuscator.transform.impl.reference.*;
+import dev.skidfuscator.obfuscator.transform.impl.flow.exceptreturn.*;
+import dev.skidfuscator.obfuscator.transform.impl.flow.condition.*;
+import dev.skidfuscator.obfuscator.transform.impl.flow.exception.*;
+import dev.skidfuscator.obfuscator.transform.impl.misc.*;
+import dev.skidfuscator.obfuscator.transform.impl.number.*;
+import dev.skidfuscator.obfuscator.transform.impl.string.*;
 import dev.skidfuscator.obfuscator.util.MapleJarUtil;
 import dev.skidfuscator.obfuscator.util.MiscUtil;
 import dev.skidfuscator.obfuscator.util.ProgressUtil;
@@ -652,10 +652,14 @@ public class Skidfuscator {
                     new BasicConditionTransformer(this),
                     new BasicExceptionTransformer(this),
                     new BasicRangeTransformer(this),
+                    // PREMIUM
+                    new ExceptionReturnTransformer(this),
+                    new FactoryMakerTransformer(this),
+                    new ReferenceTransformer(this),
                     new NumberAnnotationTransformer(this),
                     new StringAnnotationTransformer(this),
                     new SimpleOutlinerTransformer(this),
-                    new AhegaoTransformer(this)
+                    new AhegaoTransformer(this),
             ));
         } else {
             transformers.addAll(Arrays.asList(
