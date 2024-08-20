@@ -12,9 +12,6 @@ import dev.skidfuscator.obfuscator.skidasm.SkidMethodNode;
 import dev.skidfuscator.obfuscator.skidasm.cfg.SkidControlFlowGraph;
 import dev.skidfuscator.obfuscator.transform.AbstractTransformer;
 import dev.skidfuscator.obfuscator.transform.impl.flow.exceptreturn.ExceptionReturnConfig;
-import dev.skidfuscator.obfuscator.transform.impl.j2c.Dispatcher;
-import dev.skidfuscator.obfuscator.transform.impl.j2c.DispatcherDump;
-import dev.skidfuscator.obfuscator.transform.impl.j2c.NativeTransformer;
 import dev.skidfuscator.obfuscator.util.MiscUtil;
 import dev.skidfuscator.obfuscator.util.RandomUtil;
 import dev.skidfuscator.obfuscator.util.misc.Parameter;
@@ -44,15 +41,7 @@ public class ReferenceTransformer extends AbstractTransformer {
     void handle(final FinalSkidTransformEvent event) {
         final SkidClassNode dispatcher;
         try {
-            dispatcher = NativeTransformer.DEBUG
-                    ? new SkidClassNode(
-                    ClassHelper.create(REF_DISPATCHER).node,
-                    skidfuscator
-            )
-                    : new SkidClassNode(
-                    ClassHelper.create(ReferenceDispatcherDump.dump(), 0).node,
-                    skidfuscator
-            );
+            dispatcher = new SkidClassNode(ClassHelper.create(ReferenceDispatcherDump.dump(), 0).node,skidfuscator);
         } catch (Exception e) {
             Skidfuscator.LOGGER.error("Failed to create dispatcher. This WILL cause issues!", e);
             return;
