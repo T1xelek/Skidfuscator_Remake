@@ -74,7 +74,7 @@ public class ReferenceTransformer extends AbstractTransformer {
                 );
         skidfuscator.getClassRemapper().add(
                 Type.getObjectType(dispatcher.getName()).getInternalName(),
-                "skid/Ref"
+                String.format("%s/%s", referencePkg, referenceClz)
         );
     }
 
