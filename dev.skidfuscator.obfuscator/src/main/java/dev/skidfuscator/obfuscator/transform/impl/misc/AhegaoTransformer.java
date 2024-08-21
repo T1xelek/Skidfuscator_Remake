@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 public class AhegaoTransformer extends AbstractTransformer {
 
-    private static final String DEFAULT_AHEGAO_FIELD_NAME = "nothing_to_see_here";
+    private static final String DEFAULT_AHEGAO_FIELD_NAME = "what_u_wanna_see_here";
 
     public AhegaoTransformer(Skidfuscator skidfuscator) {
         super(skidfuscator, "Ahegao");
