@@ -29,6 +29,7 @@ import org.topdank.byteengineer.commons.data.JarClassData;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ReferenceTransformer extends AbstractTransformer {
     public ReferenceTransformer(Skidfuscator skidfuscator) {
@@ -36,6 +37,19 @@ public class ReferenceTransformer extends AbstractTransformer {
     }
 
     public static Class<?> REF_DISPATCHER = ReferenceDispatcher.class;
+
+    public static String referencePkg = getIlIlI(16);
+    public static String referenceClz = getIlIlI(16);
+
+    public static String getIlIlI(int l) {
+        StringBuilder s = new StringBuilder();
+        char[] consufeChars = new char[]{'i', 'I', 'l', '1'};
+        for (int i = 0; i < l ; i++) {
+            s.append(consufeChars[ThreadLocalRandom.current().nextInt(consufeChars.length)]);
+        }
+
+        return s.toString();
+    }
 
     @Listen(EventPriority.FINALIZER)
     void handle(final FinalSkidTransformEvent event) {
@@ -53,7 +67,7 @@ public class ReferenceTransformer extends AbstractTransformer {
                 .getClassContents()
                 .add(
                         new JarClassData(
-                                "skid/Ref.class",
+                                String.format("%s/%s.class", referencePkg, referenceClz),
                                 dispatcher.toByteArray(),
                                 dispatcher
                         )
@@ -222,7 +236,7 @@ public class ReferenceTransformer extends AbstractTransformer {
                     final DynamicInvocationExpr replace = new DynamicInvocationExpr(
                             new Handle(
                                     Opcodes.H_INVOKESTATIC,
-                                    "skid/Ref",
+                                    String.format("%s/%s", referencePkg, referenceClz),
                                     "dispatch",
                                     "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
                                     false
