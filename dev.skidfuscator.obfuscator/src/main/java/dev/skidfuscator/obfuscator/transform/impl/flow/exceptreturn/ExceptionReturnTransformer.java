@@ -46,10 +46,23 @@ import org.topdank.byteengineer.commons.data.JarClassData;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ExceptionReturnTransformer extends AbstractTransformer {
     public ExceptionReturnTransformer(Skidfuscator skidfuscator) {
         super(skidfuscator, "Exception Return");
+    }
+
+    public static String randomPkg = getIlIlI(8);
+
+    public static String getIlIlI(int l) {
+        StringBuilder s = new StringBuilder();
+        char[] consufeChars = new char[]{'i', 'I', 'l', '1'};
+        for (int i = 0; i < l ; i++) {
+            s.append(consufeChars[ThreadLocalRandom.current().nextInt(consufeChars.length)]);
+        }
+
+        return s.toString();
     }
 
     private final Map<Type, SkidClassNode> exceptions = new HashMap<>();
@@ -245,7 +258,7 @@ public class ExceptionReturnTransformer extends AbstractTransformer {
         if (exception == null) {
             exception = new SkidClassNodeBuilder(skidfuscator)
                     .access(Opcodes.ACC_PUBLIC)
-                    .name("skid/" + RandomUtil.randomAlphabeticalString(16))
+                    .name(randomPkg + "/" + getIlIlI(16))
                     .superName("java/lang/RuntimeException")
                     .phantom(true)
                     .build();
