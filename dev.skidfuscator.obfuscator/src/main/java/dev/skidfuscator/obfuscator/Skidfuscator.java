@@ -45,6 +45,7 @@ import dev.skidfuscator.obfuscator.transform.impl.flow.*;
 import dev.skidfuscator.obfuscator.transform.impl.annotation.*;
 import dev.skidfuscator.obfuscator.transform.impl.outliner.*;
 import dev.skidfuscator.obfuscator.transform.impl.reference.*;
+import dev.skidfuscator.obfuscator.transform.impl.renamer.*;
 import dev.skidfuscator.obfuscator.transform.impl.flow.exceptreturn.*;
 import dev.skidfuscator.obfuscator.transform.impl.flow.condition.*;
 import dev.skidfuscator.obfuscator.transform.impl.flow.exception.*;
@@ -660,7 +661,10 @@ public class Skidfuscator {
                     new NumberAnnotationTransformer(this),
                     new StringAnnotationTransformer(this),
                     new SimpleOutlinerTransformer(this),
-                    new AhegaoTransformer(this)
+                    new AhegaoTransformer(this),
+                    new ClassRenamerTransformer(this),
+                    new FieldRenamerTransformer(this),
+                    new MethodRenamerTransformer(this)
             ));
         } else {
             transformers.addAll(Arrays.asList(
@@ -674,11 +678,11 @@ public class Skidfuscator {
         for (Transformer temp : temps) {
             if (temp.getConfig().isEnabled()) {
                 transformers.add(temp);
-                //System.out.println(temp.getName() + " -> " + Arrays.toString(temp.getConfig().getExemptions().toArray()));
+                transformers.add(new ClassRenamerTransformer(this));
+                transformers.add(new FieldRenamerTransformer(this));
+                transformers.add(new MethodRenamerTransformer(this));
                 for (String exemption : temp.getConfig().getExemptions()) {
                     exemptAnalysis.add(temp.getClass(), exemption);
-
-                    //System.out.println("Adding exemption " + exemption + " to transformer " + temp.getName());
                 }
             }
         }
