@@ -54,6 +54,9 @@ public class ClassRenamerTransformer extends AbstractTransformer {
         if (classNode.isMixin())
             return;
 
+        if (classNode.getName().contains("Main"))
+            return;
+
         final String name = DICTIONARY.next();
         skidfuscator.getClassRemapper().add(
                 Type.getObjectType(classNode.getName()).getInternalName(),
