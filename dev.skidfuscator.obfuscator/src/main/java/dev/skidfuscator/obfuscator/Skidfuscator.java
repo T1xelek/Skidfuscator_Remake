@@ -678,9 +678,6 @@ public class Skidfuscator {
         for (Transformer temp : temps) {
             if (temp.getConfig().isEnabled()) {
                 transformers.add(temp);
-                transformers.add(new ClassRenamerTransformer(this));
-                transformers.add(new FieldRenamerTransformer(this));
-                transformers.add(new MethodRenamerTransformer(this));
                 for (String exemption : temp.getConfig().getExemptions()) {
                     exemptAnalysis.add(temp.getClass(), exemption);
                 }
