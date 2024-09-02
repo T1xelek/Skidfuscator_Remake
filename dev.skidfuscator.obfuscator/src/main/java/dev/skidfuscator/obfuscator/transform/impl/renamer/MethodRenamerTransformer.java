@@ -53,6 +53,9 @@ public class MethodRenamerTransformer extends AbstractTransformer {
         if (group.getName().equals("main") && group.isStatical())
             return;
 
+        if (group.getName().equals("enable") && group.isStatical())
+            return;
+
         group.setName(dictionary.next());
     }
 
