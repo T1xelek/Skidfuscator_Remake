@@ -14,7 +14,6 @@ import dev.skidfuscator.obfuscator.transform.impl.string.generator.EncryptionGen
 import dev.skidfuscator.obfuscator.transform.impl.string.generator.v3.ByteBufferClinitV3EncryptionGenerator;
 import dev.skidfuscator.obfuscator.transform.impl.string.generator.v3.BytesClinitV3EncryptionGenerator;
 import dev.skidfuscator.obfuscator.transform.impl.string.generator.v3.BytesV3EncryptionGenerator;
-import dev.skidfuscator.obfuscator.transform.impl.string.generator.polymorphic.PolymorphicEncryptionGenerator;
 import dev.skidfuscator.obfuscator.util.RandomUtil;
 import org.mapleir.asm.ClassNode;
 import org.mapleir.ir.cfg.ControlFlowGraph;
@@ -37,6 +36,8 @@ public class StringTransformerV2 extends AbstractTransformer {
         super(skidfuscator, "String Encryption", children);
     }
 
+// Polymorphic string encryption is shitty haha
+    
     @Listen
     void handle(final RunMethodTransformEvent event) {
         final SkidMethodNode methodNode = event.getMethodNode();
@@ -59,9 +60,45 @@ public class StringTransformerV2 extends AbstractTransformer {
             return;
         }
 
-        cfg.recomputeEdges();
+        final SkidClassNode parentNode = methodNode.getParent();
 
-        final PolymorphicEncryptionGenerator generator = new PolymorphicEncryptionGenerator(skidfuscator);
+        EncryptionGeneratorV3 generator = keyMap.get(parentNode);
+
+        if (generator == null) {
+            switch (RandomUtil.nextInt(3)) {
+                case 0: {
+                    final int size = RandomUtil.nextInt(127) + 1;
+                    final byte[] keys = new byte[size];
+
+                    for (int i = 0; i < size; i++) {
+                        keys[i] = (byte) (RandomUtil.nextInt(127) + 1);
+                    }
+                    keyMap.put(parentNode, (generator = new BytesV3EncryptionGenerator(keys)));
+                    break;
+                }
+                case 1: {
+                    final int size = RandomUtil.nextInt(127) + 1;
+                    final byte[] keys = new byte[size];
+
+                    for (int i = 0; i < size; i++) {
+                        keys[i] = (byte) (RandomUtil.nextInt(127) + 1);
+                    }
+                    keyMap.put(parentNode, (generator = new BytesClinitV3EncryptionGenerator(keys)));
+                    break;
+                }
+                default: {
+                    keyMap.put(parentNode, (generator = new ByteBufferClinitV3EncryptionGenerator()));
+                    break;
+                }
+            }
+        }
+
+        if (!INJECTED.contains(parentNode.getName())) {
+            generator.visitPre((SkidClassNode) methodNode.owner);
+            INJECTED.add(parentNode.getName());
+        }
+
+        EncryptionGeneratorV3 finalGenerator = generator;
         cfg.allExprStream()
                 /*
                  *
@@ -78,18 +115,22 @@ public class StringTransformerV2 extends AbstractTransformer {
                 .collect(Collectors.toList())
                 .forEach(unit -> {
                     final CodeUnit parent = unit.getParent();
-                    final Expr modified = generator.encrypt(
-                            unit,
-                            methodNode,
-                            unit.getBlock()
-                    );
+                    final String constant = (String) unit.getConstant();
+                    final SkidBlock block = (SkidBlock) unit.getBlock();
+
+                    final Expr encrypted = finalGenerator.encrypt(constant, methodNode, block);
 
                     try {
-                        parent.overwrite(unit, modified);
+                        parent.overwrite(unit, encrypted);
                     } catch (IllegalStateException e) {
                         return;
                     }
                 });
         this.success();
+    }
+
+    @Listen
+    void handle(final PostSkidTransformEvent event) {
+        keyMap.forEach((clazz, generator) -> generator.visitPost(clazz));
     }
 }
